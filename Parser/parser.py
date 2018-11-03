@@ -9,6 +9,8 @@ openFile = open('example.ics','rb')
 
 openCalendar = Calendar.from_ical(openFile.read())
 for component in openCalendar.walk():
-    print(component.get('summary'))
+    if("food" not in (component.get('Description'))):
+       pass 
+    print(component.get('Description'))
 
 openFile.close()
