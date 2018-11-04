@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="text-center jumbotron">
-  	<div class="page-header">
+	<div class="page-header">
     <h1>NJIT Notifind</h1> 
 	</div>
     <p>Find Free On-Campus!</p>
@@ -38,33 +38,64 @@
 </table>
 --!>
 <?php
-//include('account.php');
-echo "hello";
+include("/home/matt-mongo/ics/635416/ICS.php");
+function urlGoogle($name, $location, $description, $google_time_start, $google_time_end)
+{
+	return("https://calendar.google.com/calendar/r/eventedit?text=$name&dates=$google_time_start/$google_time_end&details=$description&location=$location&sf=true&output=xml");	
+}
+function urlICS($name, $location, $description, $google_time_start, $google_time_end)
+{
+	header('Content-Type: text/calendar; charset=utf-8');
+	header('Content-Disposition: attachment; filename=invite.ics');
+
+	$ics = new ICS(array(
+		'location' => $location,
+		'description' => $description,
+		'dtstart' => $google_time_start,
+		'dtend' => $google_time_end,
+		'summary' => $name
+	));
+	$icsStr = (string)$ics;
+	return $icsStr;
+
+}
 $conn = mysqli_connect("192.168.0.105","admin","password","dataDB");
 if (!$conn)
-        {
-             die("Connection failed:" . mysqli_connect_error());
-        }
+{
+	die("Connection failed:" . mysqli_connect_error());
+}
 mysqli_select_db($conn,"dataDB");
 
-$q = "Select * from Events";
+$q = "Select * from Events ORDER BY Time_Start";
 $result = mysqli_query($conn, $q);
 $rowCount = mysqli_num_rows($result);
-var_dump($rowCount);
-if (mysqli_num_rows($result) > 0)
-        {
-        //      $rows = mysqli_fetch_array($result,MYSQLI_ASSOC);
-                echo "<table>";
-                while($rows = mysqli_fetch_array($result,MYSQLI_ASSOC))
+#var_dump(getType(urlICS($rows['Name'], $rows['Location'], $rows['Description'], $rows['Google_Time_Start'], $rows['Google_Time_End'])));
+if (mysqli_num_rows($result) != 0)
+{
+	echo "<table>";
+	while($rows = mysqli_fetch_array($result,MYSQLI_ASSOC))
 
-        //      for ($cnt = 0 ; $cnt < $rowCount ; $cnt++)
-                        {
-                            echo"<tr><td>";
-                            echo$rows['Name'] .'<br>'. $rows['Location']  .'<br>'. $rows['Description'] .'<br>'.$rows['Time_Start'] ."-".$rows['Time_End'];
-                            echo "</td>";
-                        }
-                echo "</table>";
-        }
+	{
+		echo"<tr><td>";
+		echo$rows['Name'] .'<br>'. $rows['Location']  .'<br>'. $rows['Description'] .'<br>'.$rows['Time_Start'] ."-".$rows['Time_End'];
+		
+		echo "</td><td>";
+		echo '<div class="btn-group">
+			<div class="btn-group">
+			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Add to Calendar <span class="caret"></span></button>
+			<ul class="dropdown-menu" role="menu">
+			<li><a href="#">iCalendar</a></li>
+			<li><a href="'.urlGoogle($rows['Name'], $rows['Location'], $rows['Description'], $rows['Google_Time_Start'], $rows['Google_Time_End']).'">Google calendar</a></li>
+			</ul>
+			</div>
+			</div>'; 
+//echo $calLink->google();
+echo "</td>";
+
+
+	}
+	echo "</table>";
+}
 ?>
 
 <div class="panel-footer text-center myfooter">
