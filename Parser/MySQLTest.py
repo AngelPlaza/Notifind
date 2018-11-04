@@ -28,9 +28,10 @@ for component in openCalendar.walk():
         end = component.get('dtend')
         enddt = end.dt
         endstr = enddt.strftime('%Y-%m-%d-%H-%M-%S')
+        googleStartdt = startdt.strftime('%Y%m%dT%H%M%S')
+        googleEnddt = enddt.strftime('%Y%m%dT%H%M%S');
         try:
-            sqlInsertCommand = "INSERT INTO `Events` (`Name`, `Location`, `Description`, `Time_Start`, `Time_End`) VALUES (\'" + name + "\',\'" + location + "\',\'" + description + "\',\'" + startstr + "\',\'" + endstr + "\')"    
-
+            sqlInsertCommand = "INSERT INTO `Events` (`Name`, `Location`, `Description`, `Time_Start`, `Time_End`, `Google_Time_Start`, `Google_Time_End`) VALUES (\'" + name + "\',\'" + location + "\',\'" + description + "\',\'" + startstr + "\',\'" + endstr + "\',\'" + googleStartdt + "\',\'" + googleEnddt + "\')"
             #print(sqlInsertCommand)
             cursorObject.execute(sqlInsertCommand)
 
