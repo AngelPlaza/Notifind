@@ -8,11 +8,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="text-center jumbotron">
+  <div class="text-center jumbotron" style="background-image: linear-gradient(to left, #d11717, #e00e1f 35%, #dd152d 51%, #750d42);">
 	<div class="page-header">
-    <h1>NJIT Notifind</h1> 
+    <h1><strong>NJIT Notifind</strong></h1> 
 	</div>
-    <p>Find Free On-Campus!</p>
+    <p style="color:white">Find Free Food On-Campus!</p>
 </div>
 <!--
 <table class="table">
@@ -73,15 +73,20 @@ $rowCount = mysqli_num_rows($result);
 if (mysqli_num_rows($result) != 0)
 {
 	echo "<table>";
+	echo "<table class='table'>";
+	echo "<tbody>";
 	while($rows = mysqli_fetch_array($result,MYSQLI_ASSOC))
 
 	{
-		echo"<tr><td>";
-		echo$rows['Name'] .'<br>'. $rows['Location']  .'<br>'. $rows['Description'] .'<br>'.$rows['Time_Start'] ."-".$rows['Time_End'];
-		
-		echo "</td><td>";
+		$date=date_create($rows['Time_Start']);
+		$date2=date_create($rows['Time_End']);
+		$fullDate=date_format($date,"D, M d, Y")." at ".date_format($date,"g:i A")."<br> to <br> ".date_format($date2,"D, M d, Y")." at ".date_format($date2,"g:i A");
+		echo"<tr><th scope='row'>";
+		echo$rows['Name'] .'<br>'. $rows['Location']  .'<br>'.'<i>'. $rows['Description'].'</i>'.$fullDate;
+
+		echo "</th><td>";
 		echo '<div class="btn-group">
-			<div class="btn-group">
+			<div class="btn-group align-middle">
 			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Add to Calendar <span class="caret"></span></button>
 			<ul class="dropdown-menu" role="menu">
 			<li><a href="#">iCalendar</a></li>
@@ -89,12 +94,11 @@ if (mysqli_num_rows($result) != 0)
 			</ul>
 			</div>
 			</div>'; 
-//echo $calLink->google();
-echo "</td>";
+		echo "</td>";
 
 
 	}
-	echo "</table>";
+	echo "</tbody></table>";
 }
 ?>
 
