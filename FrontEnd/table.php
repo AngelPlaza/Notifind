@@ -7,46 +7,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
-	.img-responsive{
-	max-width: 100%;
-	height: auto;
-	
-}
+h1 { font-family: Book Antiqua; font-size: 36px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 60px; } h3 { font-family: Optima; font-size: 22px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 23px; } p { font-family: Arial; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } blockquote { font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif; font-size: 17px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; } pre { font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif; font-size: 11px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 23px; }
+
 </style>
 </head>
 <body>
-  <div class="text-center jumbotron" style="background-image: linear-gradient(to left, #d11717, #e00e1f 35%, #dd152d 51%, #750d42);">
-	<div class="page-header">
-    <h1><strong>NJIT Notifind</strong></h1> 
+<div>  
+<div class="text-center jumbotron" style="background-image: linear-gradient(to left, #d11717, #e00e1f 35%, #dd152d 51%, #750d42);">
+  <div> <h1><strong>NJIT Notifind</strong></h1> 
 	</div>
 	<p style="color:white">Find Free Food On-Campus!</p>
-	<div class="text-center">
 	<img class ="rounded" src="NJIT_Logo.png" height="150" width="150">
 	</div>
 </div>
-<!--
-<table class="table">
-<thead>
-<tr>
-<th scope="col">H1</th>
-<th scope="col">H2</th>
-<th scope="col">H3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th scope="row">test1</th>
-<td> wah </td>
-<td>Luigi</td>
-</tr>
-<tr>  
-<th scope="row">test2</th>
-<td> Mar </td>
-<td>iO</td>
-</tr>
-</tbody>
-</table>
---!>
 <?php
 include("/home/matt-mongo/ics/635416/ICS.php");
 function urlGoogle($name, $location, $description, $google_time_start, $google_time_end)
