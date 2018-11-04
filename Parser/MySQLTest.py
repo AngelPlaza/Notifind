@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 
-import pymysql 
+import pymysql, re 
+from icalendar import Calendar, Event
+from datetime import datetime
+from pytz import UTC
 
+
+openFile = open('example.ics','rb')
+
+openCalendar = Calendar.from_ical(openFile.read())
 dbServerName = "localhost"
 dbUser = "admin"
 dbPassword = "password"
@@ -10,26 +17,42 @@ charSet = "utf8mb4"
 
 connectionObject = pymysql.connect(host=dbServerName, user=dbUser, password=dbPassword,db=dbName,charset=charSet)
 
-try:
-    cursorObject = connectionObject.cursor()
+for component in openCalendar.walk():
+    if component.name == "VEVENT" and component.get('summary') is not None and component.get('description') is not None and 'food' in str(component.get('description')):
+        name = re.escape(str(component.get('summary')))
+        description = re.escape(str(component.get('description')))
+        location = re.escape(str(component.get('location')))
+        start = component.get('dtstart')
+        startdt = start.dt
+        startstr = startdt.strftime('%Y-%m-%d-%H-%M-%S')
+        end = component.get('dtend')
+        enddt = end.dt
+        endstr = enddt.strftime('%Y-%m-%d-%H-%M-%S')
+        try:
+            cursorObject = connectionObject.cursor()
 
-    sqlInsertCommand = "INSERT INTO `Events` (`Name`, `Location`, `Description`, `Time_Start`, `Time_End`) VALUES ('name', 'location', 'description', '2015-01-01 01:00:00', '2015-02-02 02:00:00')"
-    
-    cursorObject.execute(sqlInsertCommand)
+            sqlInsertCommand = "INSERT INTO `Events` (`Name`, `Location`, `Description`, `Time_Start`, `Time_End`) VALUES (\'" + name + "\',\'" + location + "\',\'" + description + "\',\'" + startstr + "\',\'" + endstr + "\')"    
 
-    connectionObject.commit()
+            print(sqlInsertCommand)
+            cursorObject.execute(sqlInsertCommand)
 
-    sqlShowEvents = "select * from Events"
+            connectionObject.commit()
 
-    cursorObject.execute(sqlShowEvents)
 
-    rows = cursorObject.fetchall()
+        except Exception as e:
+            print("Exception occurred:{}".format(e))
 
-    for row in rows:
-        print(row)
 
-except Exception as e:
-    print("Exception occurred:{}".format(e))
 
-finally:
-    connectionObject.close()
+
+sqlShowEvents = "select * from Events"
+
+cursorObject.execute(sqlShowEvents)
+
+rows = cursorObject.fetchall()
+
+for row in rows:
+    print(row)
+
+openFile.close()
+connectionObject.close()
