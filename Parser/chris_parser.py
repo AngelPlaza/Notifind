@@ -12,6 +12,10 @@ for component in openCalendar.walk():
     if component.name == "VEVENT" and component.get('summary') is not None and component.get('description') is not None and 'food' in str(component.get('description')):
         print("Event==================================")
         print("Event:       " + component.get('summary'))
+        desc = str(component.get('description'))
+        description = (desc.replace('\'', '\\\''))
+        print(description)
+        
         print("Description: " + component.get('description'))
         print("Location:    " + component.get('location'))
         start = component.get('dtstart')
