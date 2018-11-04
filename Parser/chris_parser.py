@@ -10,18 +10,17 @@ openFile = open('example.ics','rb')
 openCalendar = Calendar.from_ical(openFile.read())
 for component in openCalendar.walk():
     if component.name == "VEVENT" and component.get('summary') is not None and component.get('description') is not None and 'food' in str(component.get('description')):
-#        print("Event==================================")
-#        print("Event:       " + component.get('summary'))
-#        print("Description: " + component.get('description'))
-#        print("Location:    " + component.get('location'))
+        print("Event==================================")
+        print("Event:       " + component.get('summary'))
+        desc = str(component.get('description'))
+        description = (desc.replace('\'', '\\\''))
+        print(description)
+        
+        print("Description: " + component.get('description'))
+        print("Location:    " + component.get('location'))
         start = component.get('dtstart')
         end = component.get('dtend')
-        startdt = start.dt
-        startstr = startdt.strftime('%Y-%m-%d-%H-%M-%S')
-        enddt = end.dt 
-        endstr = enddt.strftime('%Y-%m-%d-%H-%M-%S')
+        print(start.dt)
+        print(end.dt)
+
 openFile.close()
-
-
-print(startstr)
-print(endstr)
