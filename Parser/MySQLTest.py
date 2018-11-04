@@ -6,7 +6,7 @@ from datetime import datetime
 from pytz import UTC
 
 
-openFile = open('example.ics','rb')
+openFile = open('NJIT_EVENTS.ics','rb')
 
 openCalendar = Calendar.from_ical(openFile.read())
 dbServerName = "localhost"
